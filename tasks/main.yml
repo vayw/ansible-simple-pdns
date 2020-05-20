@@ -1,0 +1,32 @@
+---
+- name: distro specific steps
+  include_tasks: "{{ ansible_distribution }}.yml"
+
+- name: check sqlite file exists
+  stat:
+    path: "{{ pdns_db_dir }}/{{pdns_db}}"
+  register: db_present
+
+- name: copy sqlite setup file
+  copy:
+    src: sqlite_setup.sql
+    dest: /root/pdns_sqlite3_setup.sql
+  when:
+    db_present.stat.exists == False
+
+- name: create db
+  shell: "sqlite3  {{ pdns_db_dir }}/{{pdns_db}} < /root/pdns_sqlite3_setup.sql"
+  when:
+    db_present.stat.exists == False
+
+- name: enable access to dns
+  firewalld:
+    service: dns
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: enable pdns
+  systemd:
+    name: pdns
+    enabled: yes

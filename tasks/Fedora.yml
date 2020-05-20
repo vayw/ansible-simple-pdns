@@ -1,0 +1,38 @@
+---
+- name: install system tools
+  dnf:
+    name: "libselinux-python,python3-firewall"
+    state: present
+
+- name: install PowerDNS
+  dnf:
+    name: "pdns,pdns-tools,pdns-backend-sqlite,sqlite,libselinux-python"
+    state: present
+  notify:
+    - reload_systemd
+
+- name: create data directory
+  file:
+    path: "{{ Fedora_pdns_db_dir }}"
+    owner: root
+    group: root
+    mode: '0755'
+    state: directory
+
+- name: check pdns config dir presence
+  file:
+    path: "{{ Fedora_pdns_config_dir }}"
+    owner: root
+    group: root
+    mode: '0755'
+    state: directory
+
+- name: render pdns config
+  template:
+    src: pdns.conf.j2
+    dest: "{{ Fedora_pdns_config }}"
+    owner: root
+    group: root
+    mode: '0755'
+  notify:
+    reload_pdns

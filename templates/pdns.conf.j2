@@ -1,0 +1,9 @@
+launch=gsqlite3
+gsqlite3-database={{ pdns_db_dir}}/{{ pdns_db }}
+api=yes
+api-key={{ pdns_api_key | default("DUMMYKEY") }}
+webserver=yes
+webserver-address={{ pdbs_web_address | default("127.0.0.1") }}
+local-address= {{ ansible_default_ipv4.address }}
+# Changed in version 4.4.0: removed, use local-address
+local-ipv6= {{ ansible_default_ipv6.address }}

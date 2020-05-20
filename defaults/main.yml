@@ -1,0 +1,8 @@
+---
+# defaults file for pdns
+Fedora_pdns_config_dir: /etc/pdns
+Fedora_pdns_config: "{{ Fedora_pdns_config_dir }}/pdns.conf"
+Ubuntu_pdns_config_dir: /etc/powerdns
+Ubuntu_pdns_config: "{{ Ubuntu_pdns_config_dir }}/pdns.conf"
+pdns_db_dir: /var/lib/pdns
+pdns_db: pdns.sqlite3

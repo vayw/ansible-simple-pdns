@@ -1,0 +1,63 @@
+---
+- name: install firewalld
+  apt:
+    name: firewalld
+    state: present
+    update_cache: yes
+  notify:
+    - reload_systemd
+
+- name: enable firewalld
+  systemd:
+    name: firewalld
+    enabled: yes
+
+- name: install system tools
+  apt:
+    pkg:
+    - python3-selinux
+    - python3-firewall
+    - firewalld
+    state: present
+
+- name: install PowerDNS
+  apt:
+    pkg:
+    - pdns-server
+    - pdns-tools
+    - pdns-backend-sqlite3
+    - sqlite
+    state: present
+  notify:
+    - reload_systemd
+
+- name: create data directory
+  file:
+    path: "{{ pdns_db_dir }}"
+    owner: root
+    group: root
+    mode: '0755'
+    state: directory
+
+- name: Clean default configs
+  file:
+    state: absent
+    path: "{{ Ubuntu_pdns_config_dir }}/"
+
+- name: check pdns config dir presence
+  file:
+    path: "{{ Ubuntu_pdns_config_dir }}"
+    owner: root
+    group: root
+    mode: '0755'
+    state: directory
+
+- name: render pdns config
+  template:
+    src: pdns.conf.j2
+    dest: "{{ Ubuntu_pdns_config }}"
+    owner: root
+    group: root
+    mode: '0755'
+  notify:
+    reload_pdns
