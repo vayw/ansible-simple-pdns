@@ -1,12 +1,12 @@
 ---
 - name: install system tools
   dnf:
-    name: "libselinux-python,python3-firewall"
+    name: "python3-libselinux,python3-firewall"
     state: present
 
 - name: install PowerDNS
   dnf:
-    name: "pdns,pdns-tools,pdns-backend-sqlite,sqlite,python3-libselinux"
+    name: "pdns,pdns-tools,pdns-backend-sqlite,sqlite"
     state: present
   notify:
     - reload_systemd
