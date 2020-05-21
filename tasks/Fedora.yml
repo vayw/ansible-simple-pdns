@@ -6,7 +6,7 @@
 
 - name: install PowerDNS
   dnf:
-    name: "pdns,pdns-tools,pdns-backend-sqlite,sqlite,libselinux-python"
+    name: "pdns,pdns-tools,pdns-backend-sqlite,sqlite,python3-libselinux"
     state: present
   notify:
     - reload_systemd
