@@ -6,3 +6,5 @@ Ubuntu_pdns_config_dir: /etc/powerdns
 Ubuntu_pdns_config: "{{ Ubuntu_pdns_config_dir }}/pdns.conf"
 pdns_db_dir: /var/lib/pdns
 pdns_db: pdns.sqlite3
+pdns_user: pdns
+pdns_group: pdns
