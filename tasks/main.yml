@@ -14,10 +14,25 @@
   when:
     db_present.stat.exists == False
 
+- name: create data directory
+  file:
+    path: "{{ pdns_db_dir }}"
+    owner: "{{ pdns_user }}"
+    group: "{{ pdns_group }}"
+    mode: '0755'
+    state: directory
+
 - name: create db
   shell: "sqlite3  {{ pdns_db_dir }}/{{pdns_db}} < /root/pdns_sqlite3_setup.sql"
   when:
     db_present.stat.exists == False
+
+- name: DB permissions
+  file:
+    path: "{{ pdns_db_dir }}/{{pdns_db}}"
+    owner: "{{ pdns_user }}"
+    group: "{{ pdns_group }}"
+    mode: '0644'
 
 - name: enable access to dns
   firewalld:

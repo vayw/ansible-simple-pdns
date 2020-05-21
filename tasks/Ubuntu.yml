@@ -39,20 +39,12 @@
     mode: '0755'
     state: directory
 
-- name: create data directory
-  file:
-    path: "{{ pdns_db_dir }}"
-    owner: "{{ pdns_user }}"
-    group: "{{ pdns_group }}"
-    mode: '0755'
-    state: directory
-
 - name: render pdns config
   template:
     src: pdns.conf.j2
     dest: "{{ Ubuntu_pdns_config }}"
-    owner: "{{ pdns_user }}"
-    group: "{{ pdns_group }}"
-    mode: '0755'
+    owner: root
+    group: root
+    mode: '0644'
   notify:
     reload_pdns
